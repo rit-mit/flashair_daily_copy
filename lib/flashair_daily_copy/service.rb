@@ -12,11 +12,15 @@ module FlashairDailyCopy
 
     def call
       photo_storage.files_in_dir(dir_path) do |photo|
-        Model::DailyImage.save(photo)
+        Model::DailyImage.save(folder: folder, photo: photo)
       end
     end
 
     private
+
+    def folder
+      @folder ||= Repository::GoogleDrive::Folder.build_by_id(folder_id: ENV['GOOGLE_DRIVE_UPLOAD_FOLDER_ID'])
+    end
 
     def photo_storage
       Repository::PhotoStorage.new(flashair)

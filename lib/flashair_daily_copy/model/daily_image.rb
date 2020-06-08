@@ -3,14 +3,15 @@ module FlashairDailyCopy
     class DailyImage
       include FlashairDailyCopy::Logger
 
-      attr_reader :photo
+      attr_reader :folder, :photo
 
-      def initialize(photo)
+      def initialize(folder, photo)
+        @folder = folder
         @photo = photo
       end
 
-      def self.save(photo)
-        new(photo).save
+      def self.save(folder:, photo:)
+        new(folder, photo).save
       end
 
       def save
@@ -34,15 +35,11 @@ module FlashairDailyCopy
         @daily_folder_name ||= DestinationPath.new(photo.file_name, photo.datetime).dir_name
       end
 
-      def root_folder
-        @root_folder ||= Repository::GoogleDrive::Folder.build_by_id(folder_id: ENV['GOOGLE_DRIVE_UPLOAD_FOLDER_ID'])
-      end
-
       def daily_folder
         return @daily_folder unless @daily_folder.nil?
 
-        @daily_folder = root_folder.find_folder_by_name(daily_folder_name)
-        @daily_folder ||= root_folder.create_folder(daily_folder_name)
+        @daily_folder = folder.find_folder_by_name(daily_folder_name)
+        @daily_folder ||= folder.create_folder(daily_folder_name)
       end
     end
   end
