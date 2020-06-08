@@ -1,0 +1,15 @@
+#!/usr/bin/env ruby
+
+require 'bundler/setup'
+require 'pry'
+
+require_relative '../lib/command.rb'
+
+begin
+  puts "starting copy..."
+  ::Command.start(ARGV)
+  puts "end copy..."
+rescue => e
+  puts "*not available*"
+  puts e
+end

@@ -1,0 +1,7 @@
+export CREDENTIAL_DIR=./credentials
+export CREDENTIAL_SECRET_FILENAME=client_secret.json
+
+# https://drive.google.com/drive/u/0/folders/STUVWXY1234-stuvwxy7890
+export GOOGLE_DRIVE_UPLOAD_FOLDER_ID=STUVWXY1234-stuvwxy7890
+
+export FLASH_AIR_HOSTNAME=myflashair.local

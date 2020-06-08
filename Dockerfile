@@ -1,0 +1,37 @@
+FROM ruby:2.6.5
+
+RUN apt-get update -qq && apt-get install -y ca-certificates openssl
+
+ARG APP_ROOT_IN_CONTAINER=/usr/src/app
+ARG TMP_DIR_IN_CONTAINER=/data
+ARG FLASH_AIR_HOSTNAME=myflashair.local
+ARG CREDENTIAL_PATH_IN_CONTAINER=/credentials
+
+ENV BUNDLE_JOBS=4 \
+TZ=Asia/Tokyo \
+APP_ROOT=${APP_ROOT_IN_CONTAINER} \
+TMP_DIR=${TMP_DIR_IN_CONTAINER} \
+CREDENTIAL_DIR=${CREDENTIAL_PATH_IN_CONTAINER} \
+CREDENTIAL_SECRET_FILENAME=c'lient_secret.json' \
+FLASH_AIR_HOSTNAME=${FLASH_AIR_HOSTNAME} \
+ROOT_PATH=`pwd` \
+GOOGLE_DRIVE_UPLOAD_FOLDER_ID='STUVWXY1234-stuvwxy7890' \
+GOOGLE_API_KEY='ABCDEFG1234-abcdefg12345'
+
+WORKDIR ${APP_ROOT_IN_CONTAINER}
+VOLUME /data
+VOLUME /credentials
+
+RUN mkdir -p ${APP_ROOT_IN_CONTAINER}
+RUN mkdir -p ${TMP_DIR_IN_CONTAINER}
+RUN mkdir -p ${CREDENTIAL_PATH_IN_CONTAINER}
+
+COPY Gemfile ${APP_ROOT_IN_CONTAINER}
+COPY Gemfile.lock ${APP_ROOT_IN_CONTAINER}
+RUN gem install bundler & bundle install
+
+COPY ./ ${APP_ROOT_IN_CONTAINER}
+
+COPY credentials/ ${CREDENTIAL_PATH_IN_CONTAINER}/
+
+CMD ["ruby", "-Ku", "bin/flashair_daily_copy", "start"]

@@ -1,0 +1,3 @@
+/.bundle/
+/credentials/*.json
+/credentials/*.yaml
