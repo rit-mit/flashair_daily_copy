@@ -49,6 +49,5 @@ bin/flashair_daily_copy start
 
 ### Todo
 
-- 並列処理
 - READMEの英訳
 

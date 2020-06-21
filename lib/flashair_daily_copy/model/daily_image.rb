@@ -22,11 +22,11 @@ module FlashairDailyCopy
           remote_file_name = fetched_photo.file_name
           next if daily_folder.exists? remote_file_name
 
-          info_log("  uploading: #{remote_file_name}")
+          info_log("  uploading (#{remote_file_name})")
           daily_folder.upload(fetched_photo.local_file, remote_file_name)
         end
 
-        info_log('..... finish')
+        info_log("..... finish (#{photo.file_name})")
       end
 
       private
