@@ -32,7 +32,7 @@ module FlashairDailyCopy
       def files_in_dir(path)
         image_dirs(path).each do |file_path|
           files(file_path).each do |photo|
-            info_log("yield photo: #{photo.file_name} at #{photo.datetime.to_s}")
+            info_log("yield photo: #{photo.file_name} at #{photo.datetime}")
             yield(photo)
           end
         end
