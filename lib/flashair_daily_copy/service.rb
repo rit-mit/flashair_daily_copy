@@ -4,12 +4,13 @@ module FlashairDailyCopy
     QUEUE_SIZE = 3
     STOP = 0x01
 
-    def initialize(hostname)
+    def initialize(hostname, folder_id = nil)
       @hostname = hostname
+      @folder_id = folder_id
     end
 
-    def self.call(hostname:)
-      new(hostname).call
+    def self.call(hostname:, folder_id: nil)
+      new(hostname, folder_id).call
     end
 
     def call
@@ -45,7 +46,11 @@ module FlashairDailyCopy
     end
 
     def folder
-      @folder ||= Repository::GoogleDrive::Folder.build_by_id(folder_id: ENV['GOOGLE_DRIVE_UPLOAD_FOLDER_ID'])
+      @folder ||= Repository::GoogleDrive::Folder.build_by_id(folder_id: folder_id)
+    end
+
+    def folder_id
+      @folder_id || ENV['GOOGLE_DRIVE_UPLOAD_FOLDER_ID']
     end
 
     def photo_storage
