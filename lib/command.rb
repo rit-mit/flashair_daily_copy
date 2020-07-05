@@ -33,10 +33,12 @@ end
 class Command < ::Thor
   desc 'start', 'execute download from flashair'
   method_option :hostname, aliases: '-h', contents: :string, banner: 'Flashair hostname'
+  method_option :folder_id, aliases: '-f', contents: :string, banner: 'GoogleDrive folder id'
   def start
     hostname = options[:hostname] || ENV['FLASH_AIR_HOSTNAME'] || 'myflashair.local'
+    folder_id = options[:folder_id] || ENV['GOOGLE_DRIVE_UPLOAD_FOLDER_ID']
 
-    ::FlashairDailyCopy::Service.call(hostname: hostname)
+    ::FlashairDailyCopy::Service.call(hostname: hostname, folder_id: folder_id)
   rescue StandardError => e
     puts 'Exception!'
     pp e.class
